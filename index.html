@@ -18,10 +18,12 @@
         .container {
             text-align: center;
             position: relative;
+            width: 420px;
+            height: 260px;
         }
 
         h1 {
-            font-size: 40px;
+            font-size: 36px;
             color: #d63384;
         }
 
@@ -42,9 +44,12 @@
         #no {
             background-color: #adb5bd;
             position: absolute;
+            left: 230px;
+            top: 150px;
+            transition: all 0.25s ease;
         }
 
-        /* 🔴 Modal Overlay */
+        /* Modal */
         .overlay {
             position: fixed;
             top: 0;
@@ -64,7 +69,6 @@
             width: 350px;
             text-align: center;
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            animation: pop 0.3s ease;
         }
 
         .modal h2 {
@@ -79,26 +83,17 @@
             border: none;
             cursor: pointer;
         }
-
-        @keyframes pop {
-            from {
-                transform: scale(0.7);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>💘 Are you my Valentine shika?</h1>
+    <h1>💘 Would you like to be my Valentine... shika?</h1>
 
     <button id="yes" onclick="goToLovePage()">Yes ❤️</button>
-    <button id="no" onmouseover="moveNo()" onclick="showError()">No 💔</button>
+    <button id="no"
+        onmouseenter="moveNo()"
+        onclick="showError()">No 💔</button>
 </div>
 
 <!-- ❌ Error Popup -->
@@ -125,12 +120,19 @@
 
     function moveNo() {
         const noBtn = document.getElementById("no");
+        const container = document.querySelector(".container");
 
-        const x = Math.random() * (window.innerWidth - 120);
-        const y = Math.random() * (window.innerHeight - 60);
+        const containerRect = container.getBoundingClientRect();
+        const btnRect = noBtn.getBoundingClientRect();
 
-        noBtn.style.left = x + "px";
-        noBtn.style.top = y + "px";
+        const maxX = containerRect.width - btnRect.width;
+        const maxY = containerRect.height - btnRect.height;
+
+        const x = Math.random() * maxX;
+        const y = Math.random() * maxY;
+
+        noBtn.style.left = `${x}px`;
+        noBtn.style.top = `${y}px`;
     }
 </script>
 
