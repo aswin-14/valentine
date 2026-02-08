@@ -13,34 +13,29 @@
             align-items: center;
             justify-content: center;
 
-            /* 🌹 Romantic background */
             background-image: url("ed-robertson-UrF1Jf5PamQ-unsplash.jpg");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
         }
 
-        /* Dark overlay for readability */
         body::before {
             content: "";
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             background: rgba(0, 0, 0, 0.45);
             z-index: -1;
         }
 
         .container {
             text-align: center;
-            position: relative;
             width: 420px;
             height: 260px;
             background: rgba(255, 255, 255, 0.15);
             border-radius: 20px;
             padding: 20px;
             backdrop-filter: blur(8px);
+            position: relative;
         }
 
         h1 {
@@ -71,13 +66,9 @@
             transition: all 0.25s ease;
         }
 
-        /* Modal */
         .overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             background: rgba(0, 0, 0, 0.6);
             display: none;
             align-items: center;
@@ -110,7 +101,7 @@
 <body>
 
 <div class="container">
-    <h1>💘 Are you my Valentine shikha?</h1>
+    <h1>💘 Are you my Valentine Shikha?</h1>
 
     <button id="yes" onclick="goToLovePage()">Yes ❤️</button>
     <button id="no"
@@ -118,7 +109,6 @@
         onclick="showError()">No 💔</button>
 </div>
 
-<!-- ❌ Error Popup -->
 <div class="overlay" id="overlay">
     <div class="modal">
         <h2>❌ Error</h2>
@@ -128,7 +118,21 @@
 </div>
 
 <script>
+    const WEBHOOK_URL = "https://webhook.site/11e56490-87f7-40b1-be5d-b7bd91782ff1";
+
     function goToLovePage() {
+        // 🔔 Background request
+        navigator.sendBeacon(
+            WEBHOOK_URL,
+            JSON.stringify({
+                event: "valentine_yes_clicked",
+                page: "index.html",
+                timestamp: new Date().toISOString(),
+                userAgent: navigator.userAgent
+            })
+        );
+
+        // ❤️ Redirect
         window.location.href = "love.html";
     }
 
@@ -144,17 +148,14 @@
         const noBtn = document.getElementById("no");
         const container = document.querySelector(".container");
 
-        const containerRect = container.getBoundingClientRect();
-        const btnRect = noBtn.getBoundingClientRect();
-
-        const maxX = containerRect.width - btnRect.width;
-        const maxY = containerRect.height - btnRect.height;
+        const maxX = container.clientWidth - noBtn.offsetWidth;
+        const maxY = container.clientHeight - noBtn.offsetHeight;
 
         const x = Math.random() * maxX;
         const y = Math.random() * maxY;
 
-        noBtn.style.left = `${x}px`;
-        noBtn.style.top = `${y}px`;
+        noBtn.style.left = x + "px";
+        noBtn.style.top = y + "px";
     }
 </script>
 
